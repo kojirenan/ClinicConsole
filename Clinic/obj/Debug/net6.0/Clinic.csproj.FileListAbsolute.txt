@@ -1,0 +1,15 @@
+/Users/renankoji/Desktop/Clinic/Clinic/bin/Debug/net6.0/Clinic
+/Users/renankoji/Desktop/Clinic/Clinic/bin/Debug/net6.0/Clinic.deps.json
+/Users/renankoji/Desktop/Clinic/Clinic/bin/Debug/net6.0/Clinic.runtimeconfig.json
+/Users/renankoji/Desktop/Clinic/Clinic/bin/Debug/net6.0/Clinic.dll
+/Users/renankoji/Desktop/Clinic/Clinic/bin/Debug/net6.0/Clinic.pdb
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/Clinic.csproj.AssemblyReference.cache
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/Clinic.GeneratedMSBuildEditorConfig.editorconfig
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/Clinic.AssemblyInfoInputs.cache
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/Clinic.AssemblyInfo.cs
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/Clinic.csproj.CoreCompileInputs.cache
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/Clinic.dll
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/refint/Clinic.dll
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/Clinic.pdb
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/Clinic.genruntimeconfig.cache
+/Users/renankoji/Desktop/Clinic/Clinic/obj/Debug/net6.0/ref/Clinic.dll
