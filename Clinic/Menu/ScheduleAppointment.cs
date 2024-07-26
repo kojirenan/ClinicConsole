@@ -1,3 +1,4 @@
+using Clinic.Model;
 using Clinic.Utils;
 
 namespace Clinic.Menu;
@@ -6,7 +7,7 @@ internal static class ScheduleAppointment
 {
     private static Dictionary<int, string> _typesApointment = new()
     {
-        { 1, "Clínico geral" },
+        { 1, "Clínico Geral" },
         { 2, "Dermatologista" },
         { 3, "Endocrinologista" },
         { 4, "Nutricionista" },
@@ -15,11 +16,27 @@ internal static class ScheduleAppointment
 
     internal static void Init()
     {
-        int optionSpecialist = ChooseExpert();
-        string medicalSpecialist = _typesApointment[optionSpecialist];
-        string choseDate = ChooseDate(medicalSpecialist);
+        string medicalSpecialist;
+        DateTime chosenDate;
+        string formatedDate;
+        do
+        {
+            int optionSpecialist = ChooseExpert();
+            medicalSpecialist = _typesApointment[optionSpecialist];
+        } while (!SystemCommon.Confirmation($"Consulta com {medicalSpecialist}"));
 
-        Console.WriteLine($"Foi agendado com o {_typesApointment[optionSpecialist]} para o dia {choseDate} \n");
+        do
+        {
+            chosenDate = ChooseDate(medicalSpecialist);
+            formatedDate = SystemCommon.FormatDateTime(chosenDate);
+        } while (!SystemCommon.Confirmation($"Consulta com {medicalSpecialist} para a data {formatedDate}"));
+
+        var appointment = new Appointment(medicalSpecialist, "Renan Koji", chosenDate);
+        ShowAppointments.Appointments.Add(appointment);
+        
+        Console.Clear();
+        Console.WriteLine("Parábens sua consulta foi marcada");
+        Console.WriteLine($"Especialista: {medicalSpecialist} para o dia {formatedDate} \n");
         Console.WriteLine("Precione qualquer tecla para continuar...");
         Console.ReadKey();
         Home.Init();
@@ -28,46 +45,52 @@ internal static class ScheduleAppointment
     private static int ChooseExpert()
     {
         int optionSpecialist;
-        do
-        {
-            Console.Clear();
-            Console.WriteLine("Selecione a especialidade que você precisa:");
-            foreach (var appointment in _typesApointment)
-            {
-                Console.WriteLine($"({appointment.Key}) {appointment.Value}\n");
-            }
+        int[] options = _typesApointment.Keys.ToArray();
 
-            while (!SystemFormat.TryReadNumber(out optionSpecialist))
-            {
-                Console.WriteLine("Opção inválida! Digite um número de acordo com as opção de especialidade médica");
-            }
-        } while (optionSpecialist is > 5 or < 1);
+        Console.Clear();
+        Console.WriteLine("Selecione a especialidade que você precisa:");
+        foreach (var appointment in _typesApointment)
+        {
+            Console.WriteLine($"({appointment.Key}) {appointment.Value}\n");
+        }
+
+        while (!SystemCommon.IsValidOption(options, out optionSpecialist))
+        {
+            Console.WriteLine("Opção inválida! Digite um número de acordo com as opção de especialidade médica");
+        }
 
         return optionSpecialist;
     }
 
-    private static string ChooseDate(string expert)
+    private static DateTime ChooseDate(string expert)
     {
-        int optionDate;
-        var dates = DateRandom.GenerateListDaysAppointment(5, 10);
-        do
+        int chosenDate;
+        var randomDates = DateRandom.GenerateListDaysAppointment(5, 10);
+        var validOptions = new int[randomDates.Length];
+        var dateOptions = new Dictionary<int, DateTime>();
+
+        // Converts to a dictionary to allow with a pair choose.
+        // Create an array of options.
+        for (int i = 0; i < randomDates.Length; i++)
         {
-            Console.Clear();
-            Console.WriteLine($"Selecione uma data para agendar a consulta: {expert}\n");
-            Console.WriteLine("Precione a tecla referente ao dia e hora disponível");
+            validOptions[i] = i + 1;
+            dateOptions.Add(i + 1, randomDates[i]);
+        }
 
-            for(int i = 0; i < dates.Length; i++)
-            {
-                string formatedDate = SystemFormat.FormatDateTime(dates[i]);
-                Console.WriteLine($"({i + 1}) {formatedDate}");
-            }
+        Console.Clear();
+        Console.WriteLine($"Selecione uma data para agendar a consulta: {expert}\n");
+        Console.WriteLine("Precione a tecla referente ao dia e hora disponível");
+        foreach (var option in dateOptions)
+        {
+            var formatedDate = SystemCommon.FormatDateTime(option.Value);
+            Console.WriteLine($"({option.Key}) {formatedDate}");
+        }
 
-            while (!SystemFormat.TryReadNumber(out optionDate))
-            {
-                Console.WriteLine("Opção inválida! Digite um número de acordo com as opção de data");
-            }
-        } while (optionDate is > 5 or < 1);
+        while (!SystemCommon.IsValidOption(validOptions, out chosenDate))
+        {
+            Console.WriteLine("Opção inválida! Digite um número de acordo com as opção de data");
+        }
 
-        return SystemFormat.FormatDateTime(dates[optionDate - 1]);
+        return dateOptions[chosenDate];
     }
 }
