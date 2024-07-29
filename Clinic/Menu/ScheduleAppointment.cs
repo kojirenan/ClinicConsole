@@ -1,3 +1,4 @@
+using Clinic.DAL;
 using Clinic.Model;
 using Clinic.Utils;
 
@@ -32,7 +33,7 @@ internal static class ScheduleAppointment
         } while (!SystemCommon.Confirmation($"Consulta com {medicalSpecialist} para a data {formatedDate}"));
 
         var appointment = new Appointment(medicalSpecialist, "Renan Koji", chosenDate);
-        ShowAppointments.Appointments.Add(appointment);
+        AppointmentDAL.Appointments.Add(appointment);
         
         Console.Clear();
         Console.WriteLine("Parábens sua consulta foi marcada");

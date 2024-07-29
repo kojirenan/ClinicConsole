@@ -9,8 +9,8 @@ public static class Home
         var options = new Dictionary<int, string>()
         {
             { 1, "Realizar consulta" },
-            { 2, "Visualizar consulta agendada" },
-            { 3, "Visualizar histórico de atendimento" },
+            { 2, "Visualizar consultas" },
+            { 3, "Editar consulta agendada" },
             { 4, "Sair da aplicação" }
         };
 
