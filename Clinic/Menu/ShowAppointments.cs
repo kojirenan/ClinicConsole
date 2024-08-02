@@ -1,5 +1,4 @@
 using Clinic.DAL;
-using Clinic.Model;
 using Clinic.Utils;
 
 namespace Clinic.Menu;
@@ -13,26 +12,29 @@ internal static class ShowAppointments
         { 3, "Voltar" }
     };
 
-    // TO-DO: improve the code
-    private static readonly List<Appointment> Appointments = AppointmentDAL.Appointments;
-
-    internal static void Init()
+    internal static void Init(AppointmentDAL appointmentDal)
     {
-        var chosenOption = MenuChoices();
-        switch (chosenOption)
+        bool continueLoop = true;
+
+        while (continueLoop)
         {
-            case 1:
-                ShowScheduleAppointments();
-                break;
-            case 2:
-                ShowAllAppointments();
-                break;
-            case 3:
-                Home.Init();
-                break;
-            default:
-                Console.WriteLine("Opção inválida");
-                break;
+            var chosenOption = MenuChoices();
+            switch (chosenOption)
+            {
+                case 1:
+                    ShowScheduleAppointments(appointmentDal);
+                    break;
+                case 2:
+                    ShowAllAppointments(appointmentDal);
+                    break;
+                case 3:
+                    continueLoop = false;
+                    Home.Init();
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida");
+                    break;
+            }
         }
     }
 
@@ -56,11 +58,19 @@ internal static class ShowAppointments
         return chosenMenu;
     }
 
-    private static void ShowScheduleAppointments()
+    private static void ShowScheduleAppointments(AppointmentDAL appointmentDal)
     {
+        var appointments = appointmentDal.List();
+        Console.WriteLine(appointments);
+        if (appointments is null)
+        {
+            return;
+        }
+
         Console.Clear();
         Console.WriteLine($"Você tem as seguintes consulta(s) agendada(s):\n");
-        foreach (var appointment in Appointments)
+
+        foreach (var appointment in appointments)
         {
             if (appointment.Date > DateTime.Now)
             {
@@ -69,21 +79,22 @@ internal static class ShowAppointments
             }
         }
 
-        Console.WriteLine("Precione qualquer tecla para voltar ao menu principal.");
+        Console.WriteLine("\nPrecione qualquer tecla para voltar ao menu principal.");
         Console.ReadKey();
-        Init();
     }
 
-    private static void ShowAllAppointments()
+    private static void ShowAllAppointments(AppointmentDAL appointmentDal)
     {
+        var appointments = appointmentDal.List();
+
         Console.Clear();
         Console.WriteLine("Histórico de consultas: \n\n");
-        foreach (var appointment in Appointments)
+        foreach (var appointment in appointments)
         {
             var formatedDate = SystemCommon.FormatDateTime(appointment.Date);
             string status = appointment.IsCarriedOut == false && appointment.Date < DateTime.Now
                 ? "Cancelada"
-                : "Realizada";
+                : "Agendada";
 
             Console.WriteLine($"Consulta com : {appointment.Specialty} \n" +
                               $"Data: {formatedDate} \n" +
@@ -92,6 +103,5 @@ internal static class ShowAppointments
 
         Console.WriteLine("Precione qualquer tecla para voltar ao menu principal.");
         Console.ReadKey();
-        Init();
     }
 }

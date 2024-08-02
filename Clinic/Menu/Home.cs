@@ -1,3 +1,4 @@
+using Clinic.DAL;
 using Clinic.Utils;
 
 namespace Clinic.Menu;
@@ -6,6 +7,8 @@ public static class Home
 {
     public static void Init()
     {
+        var context = new ClinicContext();
+        var appointmentDal = new AppointmentDAL(context);
         var options = new Dictionary<int, string>()
         {
             { 1, "Realizar consulta" },
@@ -38,13 +41,16 @@ public static class Home
         switch (choice)
         {
             case 1:
-                ScheduleAppointment.Init();
+                ScheduleAppointment.Init(appointmentDal);
                 break;
             case 2 :
-                ShowAppointments.Init();
+                ShowAppointments.Init(appointmentDal);
                 break;
-            default:
-                Console.WriteLine("Ainda não implementado");
+            case 3:
+                EditAppoitment.Init(appointmentDal);
+                break;
+            case 4:
+                Console.WriteLine("Volte sempre! :)");
                 break;
         }
     }

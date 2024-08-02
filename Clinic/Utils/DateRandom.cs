@@ -5,19 +5,6 @@ internal static class DateRandom
     private static Random _random = new();
     private static DateTime _today = DateTime.Today;
     
-    private static DateTime GenerateRandomDayOfWeek(int maxDayAhead)
-    {
-        DateTime randomDate;
-        do
-        {
-            int dayToAdd = _random.Next(1, maxDayAhead + 1);
-            randomDate = _today.AddDays(dayToAdd);
-        } while (!IsWeekend(randomDate));
-
-        DateTime generateRandomDate = TimeRandom.AddRandomTime(randomDate);
-        return generateRandomDate;
-    }
-
     internal static DateTime[] GenerateListDaysAppointment(int quantity, int daysAhead)
     {
         var scheduleDates = new DateTime[quantity];
@@ -30,9 +17,29 @@ internal static class DateRandom
         Array.Sort(scheduleDates);
         return scheduleDates;
     }
-
-    private static bool IsWeekend(DateTime date)
+    
+    private static DateTime GenerateRandomDayOfWeek(int maxDayAhead)
     {
-        return date.DayOfWeek != DayOfWeek.Saturday && date.DayOfWeek != DayOfWeek.Sunday;
+        DateTime randomDate;
+        bool isWeekend;
+        do
+        {
+            int dayToAdd = _random.Next(1, maxDayAhead + 1);
+            randomDate = _today.AddDays(dayToAdd);
+            
+            isWeekend = randomDate.DayOfWeek == DayOfWeek.Saturday && randomDate.DayOfWeek == DayOfWeek.Sunday;
+        } while (isWeekend);
+
+        DateTime generateRandomDate = AddRandomTime(randomDate);
+        return generateRandomDate;
+    }
+    
+    private static DateTime AddRandomTime(DateTime dateTime)
+    {
+        int randomHour = _random.Next(8, 17);
+        int[] validMinutes = {0, 15, 30, 45};
+        int randomMinute = validMinutes[_random.Next(validMinutes.Length)];
+
+        return dateTime.AddHours(randomHour).AddMinutes(randomMinute);
     }
 }

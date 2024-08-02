@@ -15,7 +15,7 @@ internal static class ScheduleAppointment
         { 5, "Ortopedista" }
     };
 
-    internal static void Init()
+    internal static void Init(AppointmentDAL appointmentDal)
     {
         string medicalSpecialist;
         DateTime chosenDate;
@@ -33,7 +33,7 @@ internal static class ScheduleAppointment
         } while (!SystemCommon.Confirmation($"Consulta com {medicalSpecialist} para a data {formatedDate}"));
 
         var appointment = new Appointment(medicalSpecialist, "Renan Koji", chosenDate);
-        AppointmentDAL.Appointments.Add(appointment);
+        appointmentDal.Add(appointment);
         
         Console.Clear();
         Console.WriteLine("Parábens sua consulta foi marcada");
